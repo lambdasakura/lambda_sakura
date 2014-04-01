@@ -20,25 +20,22 @@ Copyright (c) 2014 lambda_sakura
 @export
 (defun get-argv ()
   #+sbcl sb-ext:*posix-argv*
-  #+ecl(ext:command-args)
   #+ccl ccl:*command-line-argument-list*
-  #-(or sbcl ecl ccl)(error "no argv"))
+  #-(or sbcl ccl)(error "no argv"))
 
 @export
 (defun get-pid ()
   #+sbcl(sb-posix:getpid)
-  #+ecl(ext:getpid)
   #+ccl(ccl::getpid)
-  #-(or sbcl ecl ccl)(error "no getpid"))
+  #-(or sbcl ccl)(error "no getpid"))
 
 @export
 (defun chdir (pathspec)
   "change current directory"
   (setf *default-pathname-defaults* (truename pathspec))
   #+sbcl(sb-posix:chdir pathspec)
-  #+ecl(ext:chdir pathspec)
   #+ccl(ccl::%chdir (namestring pathspec))
-  #-(or ecl sbcl ccl)(error "no chdir"))
+  #-(or sbcl ccl)(error "no chdir"))
 
 @export
 (defun pwd ()
@@ -48,9 +45,8 @@ Copyright (c) 2014 lambda_sakura
 @export
 (defun get-cwd ()
   #+sbcl(sb-posix:getcwd)
-  #+ecl(namestring (ext:getcwd))
   #+ccl(namestring (current-directory))
-  #-(or sbcl ecl ccl)(error "no getcwd"))
+  #-(or sbcl ccl)(error "no getcwd"))
 
 @export
 (defun current-directory ()
@@ -77,7 +73,7 @@ Copyright (c) 2014 lambda_sakura
 (defun getuid ()
   #+sbcl(sb-unix:unix-getuid)
   #+ccl(ccl::getuid)
-  #-(or sbcl ecl ccl)(error "no getuid"))
+  #-(or sbcl ccl)(error "no getuid"))
 
 @export
 (defun rootp ()
@@ -104,18 +100,10 @@ Copyright (c) 2014 lambda_sakura
 
 @export
 (defun get-env (name &optional default)
-  #+CMU
-  (let ((x (assoc name ext:*environment-list*
-		  :test #'string=)))
-    (if x (cdr x) default))
-  #-CMU
-  (or
-   #+Allegro (sys:getenv name)
-   #+CLISP (ext:getenv name)
-   #+ECL (si:getenv name)
-   #+SBCL (sb-unix::posix-getenv name)
-   #+LISPWORKS (lispworks:environment-variable name)
-   default))
+  #+clisp (ext:getenv name)
+  #+ccl(ccl:getenv name)
+  #+sbcl (sb-unix::posix-getenv name)
+  #-(or sbcl ccl clisp)(error "no getenv"))
 
 (defun ensure-trailing-slash (path)
   (if (or (string= "" path)
