@@ -19,7 +19,7 @@
   :depends-on (:cl-japanese-streams
 	       :cl-ppcre
 	       :cl-containers
-	       :lisp-interface-library
+	       ;; :lisp-interface-library
 	       :alexandria
 	       :anaphora
 	       :split-sequence
