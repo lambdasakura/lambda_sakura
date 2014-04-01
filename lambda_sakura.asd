@@ -19,6 +19,7 @@
   :depends-on (:cl-japanese-streams
 	       :cl-ppcre
 	       :cl-containers
+	       :cl-annot
 	       ;; :lisp-interface-library
 	       :alexandria
 	       :anaphora
