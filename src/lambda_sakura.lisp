@@ -110,3 +110,6 @@ Copyright (c) 2014 lambda_sakura
 	  (char= (aref path (1- (length path))) #\/))
       path
       (concatenate 'string path "/")))
+
+(defun string+ (&rest args)
+  (apply #'concatenate 'string args))
