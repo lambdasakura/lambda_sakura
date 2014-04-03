@@ -111,10 +111,12 @@ Copyright (c) 2014 lambda_sakura
       path
       (concatenate 'string path "/")))
 
+@export
 (defun string+ (&rest args)
   (apply #'concatenate 'string args))
 
 
+@export
 (defun split-seq (s &optional (delim #\,))
   (labels ((split-seq1 (s delim rel)
 	     (if-let ((i1 (position delim s)))
