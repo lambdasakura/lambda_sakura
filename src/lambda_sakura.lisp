@@ -113,3 +113,12 @@ Copyright (c) 2014 lambda_sakura
 
 (defun string+ (&rest args)
   (apply #'concatenate 'string args))
+
+
+(defun split-seq (s &optional (delim #\,))
+  (labels ((split-seq1 (s delim rel)
+	     (if-let ((i1 (position delim s)))
+	       (split-seq1 (subseq s (1+ i1)) delim
+			   (pushnew (subseq s 0 i1) rel))
+	       (nreverse (pushnew s rel)))))
+    (split-seq1 s delim '())))
