@@ -161,3 +161,12 @@ Copyright (c) 2014 lambda_sakura
      (,n ,@(mapcar #'cadr letargs))))
 
 
+
+@export
+(defun string-join (strs &key (split-char #\Newline))
+   (format t "~{~a~a~}" (collect-append
+			 (map-fn 'list #'list (scan strs)
+				 (series split-char)))))
+
+(defun test-other-keyword (&rest args &key a &allow-other-keys)
+  (list args a ))
