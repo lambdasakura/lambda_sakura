@@ -21,13 +21,15 @@
 	       :cl-containers
 	       :cl-annot
 	       ;; :lisp-interface-library
+	       ;; :metatilities
 	       :alexandria
 	       :anaphora
 	       :split-sequence
 	       :series
 	       :iterate
 	       :kmrcl
-	       :cl-interpol)
+	       :cl-interpol
+	       :local-time)
   :components ((:module "src"
                 :components
                 ((:file "lambda_sakura"))))

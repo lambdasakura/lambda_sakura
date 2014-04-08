@@ -2,6 +2,8 @@
 This file is a part of lambda_sakura project.
 Copyright (c) 2014 lambda_sakura
 |#
+(in-package :local-time)
+(reread-timezone-repository)
 
 (in-package :cl-user)
 (defpackage lambda_sakura
@@ -11,6 +13,7 @@ Copyright (c) 2014 lambda_sakura
 	:cl-containers
 	:cl-japanese-streams
 	:split-sequence
+	:local-time
 	:series))
 (in-package :lambda_sakura)
 
@@ -124,3 +127,37 @@ Copyright (c) 2014 lambda_sakura
 			   (pushnew (subseq s 0 i1) rel))
 	       (nreverse (pushnew s rel)))))
     (split-seq1 s delim '())))
+
+@export
+(defun mkstr (&rest args)
+  (with-output-to-string (s)
+    (dolist (a args) (princ a s))))
+
+@export
+(defun group (source n)
+  (if (zerop n) (error "zero length"))
+  (labels ((rec (source acc)
+	     (let ((rest (nthcdr n source)))
+	       (if (consp rest)
+		   (rec rest (cons (subseq source 0 n)
+				   acc))
+		   (nreverse (cons source acc))))))
+    (if source (rec source nil) nil)))
+
+;; @export
+;; (defun flatten (x)
+;;   (labels ((rec (x acc)
+;; 	     (cond ((null x) acc)
+;; 		   ((atom x) (cons x acc))
+;; 		   (t (rec
+;; 		       (car x)
+;; 		       (rec (cdr x) acc))))))
+;;     (rec x nil)))
+
+@export
+(defmacro nlet (n letargs &rest body)
+  `(labels ((,n ,(mapcar #'car letargs)
+	      ,@body))
+     (,n ,@(mapcar #'cadr letargs))))
+
+
